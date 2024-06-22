@@ -1,7 +1,12 @@
+import { ClerkProvider, UserButton } from "@clerk/nextjs";
+
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1>Threads</h1>
-    </main>
-  );
+    <div>
+      {/* The user button which controls account information */}
+      <ClerkProvider>
+        <UserButton afterSignOutUrl="/" />
+      </ClerkProvider>
+    </div>
+  )
 }
