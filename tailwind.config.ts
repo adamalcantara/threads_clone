@@ -1,3 +1,5 @@
+// Code in this file came from the project files
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
