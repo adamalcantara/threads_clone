@@ -17,7 +17,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { UserValidation } from "@/lib/validations/user";
 import * as z from "zod";
 import Image from "next/image";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 
 interface Props {
     user: {
@@ -32,6 +32,9 @@ interface Props {
 }
 
 const AccountProfile = ({ user, btnTitle }: Props) => {
+    // state for the image upload, set it to file, initiallhy an empty array
+    const [files, setFiles] = useState<File[]>([]);
+    
     const form = useForm({
         resolver: zodResolver(UserValidation),
         defaultValues: {
@@ -43,8 +46,32 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
     })
 
     // function for the image upload
-    const handleImage = (e: ChangeEvent, fieldChange: (value: string) => void) => {
+    const handleImage = (e: ChangeEvent<HTMLInputElement>, fieldChange: (value: string) => void) => {
+        // prevent browser reload
         e.preventDefault();
+
+        // initialize a new instance of the file reader
+        const fileReader = new FileReader();
+
+        // check if there is anything
+        if(e.target.files && e.target.files.length > 0) {
+            const file = e.target.files[0];
+
+            setFiles(Array.from(e.target.files));
+
+            // If the file type is not an image, do nothing
+            if(!file.type.includes('image')) return;
+
+
+            fileReader.onload = async (event) => {
+                // set imageDataUrl to the result of the uploaded image as a string
+                const imageDataUrl = event.target?.result?.toString() || '';
+
+                fieldChange(imageDataUrl);
+            }
+
+            fileReader.readAsDataURL(file);
+        }
     }
 
     // onSubmit function from shadcn
