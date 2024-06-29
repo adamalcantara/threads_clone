@@ -1,4 +1,10 @@
 // use server actions
 "use server"
 
-// connect to mongoose
+import { connectToDB } from "../mongoose";
+
+export async function updateUser(): Promise<void> {
+    connectToDB();
+
+    
+}
