@@ -107,6 +107,14 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
           image: values.profile_photo,
           path: pathname,
         });
+
+        if(pathname === '/profile/edit') {
+          // send to previous page after editing
+          router.back();
+        } else {
+          // otherwise go to the root
+          router.push('/');
+        }
       }
 
     return (
